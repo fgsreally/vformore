@@ -1,6 +1,6 @@
 {
   "name": "@vformore/model",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "keywords": [],
   "author": "",
@@ -22,7 +22,10 @@
   "scripts": {
     "build": "tsup"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@types/lodash-es": "^4.17.6",
+    "lodash-es": "^4.17.21"
+  },
   "devDependencies": {
     "tsup": "^6.2.2"
   }

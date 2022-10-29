@@ -1,23 +1,38 @@
 <template>
-  <el-input v-model="data.age" placeholder="年纪"></el-input>
-  <el-input
-    v-model="data.money"
-    placeholder="退休金(大于55)"
-    v-bind="config.money"
-  ></el-input>
+  <el-form :model="data" label-width="120px">
+    <Form
+      :data="data"
+      :config="config"
+      :comp-list="compList"
+      :get-comp="getComp"
+    ></Form>
+  </el-form>
 </template>
 
 <script setup lang="ts">
 import { ElInput } from "element-plus";
 import { createInstance } from "@vformore/core";
-import { ref } from "vue";
+import FormItem from "./FormItem.vue";
+import Form from "@vformore/component";
+function getComp() {
+  return FormItem;
+}
 
 let { config, data } = createInstance({
   age: {
-    default: 40,
+    _component: "input",
+    _default: 40,
+    label: "年龄",
   },
   money: {
+    _component: "input",
+    _default: 3000,
     disabled: "{age<55}",
+    label: "退休金",
   },
 });
+
+let compList = {
+  input: ElInput,
+};
 </script>

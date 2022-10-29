@@ -1,0 +1,27 @@
+{
+  "name": "@vformore/component",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "vue-tsc --noEmit && vite build"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "vue": "^3.2.41"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^3.1.0",
+    "vite-plugin-dts": "^1.6.6",
+    "typescript": "^4.6.4",
+    "vite": "^3.1.0",
+    "vue-tsc": "^0.40.4"
+  }
+}

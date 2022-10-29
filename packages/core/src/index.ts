@@ -29,7 +29,7 @@ export function createInstance(schema: { [key in string]: any }) {
   }
   scope.run(() => {
     for (let i in schema) {
-      data[i] = schema[i].default || null;
+      data[i] = schema[i]._default || null;
       traverseProperty(schema[i], i);
     }
   });
