@@ -5,10 +5,10 @@ describe("core model", () => {
   it("basic ", () => {
     let schema = {
       age: {
-        default: 40,
+        _default: 40,
       },
       category: {
-        value: "{age>30?'old':'young'}",
+        value: "{{age>30?'old':'young'}}",
       },
     };
     let { config, data } = createInstance(schema);
@@ -18,15 +18,15 @@ describe("core model", () => {
   it("nest", () => {
     let schema = {
       age: {
-        default: 40,
+        _default: 40,
       },
       category: {
-        value: "{age>30?'old':'young'}",
+        value: "{{age>30?'old':'young'}}",
         guess: {
-          isStudent: "{age<25}",
+          isStudent: "{{age<25}}",
           bodyState: {
-            arm: "{age<45}",
-            leg: "{age<35}",
+            arm: "{{age<45}}",
+            leg: "{{age<35}}",
           },
         },
       },
@@ -39,10 +39,10 @@ describe("core model", () => {
   it("dynamic", () => {
     let schema = {
       age: {
-        default: 40,
+        _default: 40,
       },
       category: {
-        value: "{age>30?'old':'young'}",
+        value: "{{age>30?'old':'young'}}",
       },
     };
     let { config, data } = createInstance(schema);
@@ -54,13 +54,15 @@ describe("core model", () => {
   it("dispose", () => {
     let schema = {
       age: {
-        default: 40,
+        _default: 40,
       },
       category: {
-        value: "{age>30?'old':'young'}",
+        value: "{{age>30?'old':'young'}}",
       },
     };
     let { config, data, scope } = createInstance(schema);
+
+    expect(config.category.value).toBe("old");
 
     scope.stop();
     data.age = 10;

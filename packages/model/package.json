@@ -1,6 +1,6 @@
 {
   "name": "@vformore/model",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "keywords": [],
   "author": "",
@@ -23,10 +23,11 @@
     "build": "tsup"
   },
   "dependencies": {
-    "@types/lodash-es": "^4.17.6",
-    "lodash-es": "^4.17.21"
+    "lodash-es": "^4.17.21",
+    "vue": "^3.2.41"
   },
   "devDependencies": {
+    "@types/lodash-es": "^4.17.6",
     "tsup": "^6.2.2"
   }
 }

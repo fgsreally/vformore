@@ -62,10 +62,12 @@ importers:
       '@types/lodash-es': ^4.17.6
       lodash-es: ^4.17.21
       tsup: ^6.2.2
+      vue: ^3.2.41
     dependencies:
-      '@types/lodash-es': registry.npmmirror.com/@types/lodash-es/4.17.6
       lodash-es: registry.npmmirror.com/lodash-es/4.17.21
+      vue: registry.npmmirror.com/vue/3.2.41
     devDependencies:
+      '@types/lodash-es': registry.npmmirror.com/@types/lodash-es/4.17.6
       tsup: registry.npmmirror.com/tsup/6.2.3
 
   packages/playground:

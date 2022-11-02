@@ -36,7 +36,7 @@ describe("model", () => {
       brief: string;
     }
     let user = new User({ name: "fgp" });
-    expect(user.exec().error).toStrictEqual({ brief: "名字应为fgs18" });
+    expect(user.exec().error).toContain("名字应为fgs18");
     user.name = 'fgs'
     expect(user.exec().error).toBe(false);
 

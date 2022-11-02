@@ -27,7 +27,7 @@ let { config, data } = createInstance({
   money: {
     _component: "input",
     _default: 3000,
-    disabled: "{age<55}",
+    disabled: "{{age<55}}",
     label: "退休金",
   },
 });

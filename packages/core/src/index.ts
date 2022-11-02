@@ -8,8 +8,8 @@ export function createInstance(schema: { [key in string]: any }) {
   function traverseProperty(obj: any, path: string) {
     for (let k in obj) {
       let propertyPath = `${path}.${k}`;
-      if (typeof obj[k] === "string" && /^{(.*)}$/.test(obj[k])) {
-        let body = obj[k].match(/^{(.*)}$/)[1];
+      if (typeof obj[k] === "string" && /^{{(.*)}}$/.test(obj[k])) {
+        let body = obj[k].match(/^{{(.*)}}$/)[1];
         let r = computed(() => {
           return new Function(
             `{${Object.keys(data).join(",")}}`,
