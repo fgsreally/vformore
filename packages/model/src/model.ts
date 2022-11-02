@@ -105,7 +105,7 @@ interface decoratorInfo {
   getRule?: (instance: any, v: any) => any;
 }
 
-export class Model<DataModel = any> {
+export class Model<DataModel extends Omit<{ [key: string]: any },'data'|'error'|"errorMap">> {
   private _allProperty: Set<string> = new Set();
   errorMap: { [key: string]: string }
   data: { [key: string]: any }
@@ -168,7 +168,7 @@ function isEmpty(value: any) {
   return value === undefined || value === null;
 }
 
-export class VModel<DataModel = any> {
+export class VModel<DataModel extends Omit<{ [key: string]: any },'data'|'error'|"errorMap"> >{
   private _allProperty: Set<string> = new Set();
   public data: UnwrapNestedRefs<DataModel> = reactive({} as any)
   public error: UnwrapNestedRefs<string[]> = reactive([])
