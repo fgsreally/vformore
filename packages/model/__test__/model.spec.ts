@@ -1,13 +1,12 @@
-import { Model, Get, Is, Rule } from "./../src";
+import { Model, Get, Is, Rule, isNumber } from "./../src";
 import { describe, expect, it } from "vitest";
 describe("model", () => {
   it("basic", () => {
-    class User extends Model {
+    class User extends Model<User> {
       @Is("fgp")
       name: string;
-      @Is("", 18)
-      age: string;
-
+      @Is(isNumber, 18)
+      age: number;
       @Get(({ name, age }: any) => name + age)
       brief: string;
     }

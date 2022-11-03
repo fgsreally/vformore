@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "@vformore/component": "workspace:^1.0.0",
-    "@vformore/core": "workspace:^1.0.2",
+    "@vformore/core": "workspace:^1.0.3",
+    "@vformore/model": "workspace:^1.0.4",
     "element-plus": "^2.2.18",
-    "simple-code-editor": "^1.2.2",
     "vue": "^3.2.37"
   },
   "devDependencies": {

@@ -73,7 +73,8 @@ importers:
   packages/playground:
     specifiers:
       '@vformore/component': workspace:^1.0.0
-      '@vformore/core': workspace:^1.0.0
+      '@vformore/core': workspace:^1.0.2
+      '@vformore/model': workspace:^1.0.3
       '@vitejs/plugin-vue': ^3.1.0
       element-plus: ^2.2.18
       simple-code-editor: ^1.2.2
@@ -84,6 +85,7 @@ importers:
     dependencies:
       '@vformore/component': link:../component
       '@vformore/core': link:../core
+      '@vformore/model': link:../model
       element-plus: registry.npmmirror.com/element-plus/2.2.18_vue@3.2.41
       simple-code-editor: registry.npmmirror.com/simple-code-editor/1.2.2
       vue: registry.npmmirror.com/vue/3.2.41

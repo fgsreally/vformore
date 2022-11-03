@@ -1,5 +1,11 @@
 # @vformore/core
 
+## 1.0.3
+
+### Patch Changes
+
+- fix(core) add init data which also support Ref
+
 ## 1.0.2
 
 ### Patch Changes

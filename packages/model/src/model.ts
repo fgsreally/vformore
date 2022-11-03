@@ -23,6 +23,7 @@ function validtor(p: RegExp | string | Function | Object, v: any) {
 }
 
 export function Any(obj: any, key: string) {
+  init(obj)
   obj._d.unshift({
     type: "any",
     key,
@@ -44,14 +45,14 @@ export function Rule(p: RegExp | string | Function | Object, info: string) {
     obj._d.unshift({
       type: "rule",
       key,
+      setRule: (instance: any, v: any) => {
+        instance[`_${key}`] = v;
+        return true
+      },
       getRule: (instance: any, v: any) => {
-
-        if (!instance.error[key]
-        ) {
-          if (!validtor(p, v)) {
-            instance.errorMap[key] = info
-            instance.error.push(info)
-          }
+        if (!validtor(p, v) && !instance.errorMap[key]) {
+          instance.errorMap[key] = info
+          instance.error.push(info)
         }
       }
     });
@@ -87,7 +88,7 @@ export function Is(p: RegExp | string | Function | Object, defaultValue?: any) {
         if (validtor(p, v)) {
           instance[`_${key}`] = v;
         }
-
+        return true
       },
       getRule: (instance: any) => {
         return instance[`_${key}`];
@@ -105,7 +106,7 @@ interface decoratorInfo {
   getRule?: (instance: any, v: any) => any;
 }
 
-export class Model<DataModel extends Omit<{ [key: string]: any },'data'|'error'|"errorMap">> {
+export class Model<DataModel extends Omit<{ [key: string]: any }, 'data' | 'error' | "errorMap">> {
   private _allProperty: Set<string> = new Set();
   errorMap: { [key: string]: string }
   data: { [key: string]: any }
@@ -123,13 +124,11 @@ export class Model<DataModel extends Omit<{ [key: string]: any },'data'|'error'|
         set: (v) => {
           for (let i of (that as any)._d.filter((item: any) => item.key === key)
           ) {
-            if (i.setRule)
-              i.setRule(that, v)
+            if (i.setRule && i.setRule(that, v)) break
           }
-
         },
         get: () => {
-          let v: any
+          let v: any = (that as any)[`_${key}`]
           for (let i of (that as any)._d.filter((item: any) => item.key === key)
           ) {
             if (i.getRule) {
@@ -140,6 +139,9 @@ export class Model<DataModel extends Omit<{ [key: string]: any },'data'|'error'|
         }
       })
     }
+    this.setValue(data)
+  }
+  setValue(data?: Partial<DataModel>) {
     if (data) {
       for (let i in data) {
         if ([...this._allProperty].includes(i)) {
@@ -168,7 +170,7 @@ function isEmpty(value: any) {
   return value === undefined || value === null;
 }
 
-export class VModel<DataModel extends Omit<{ [key: string]: any },'data'|'error'|"errorMap"> >{
+export class VModel<DataModel extends Omit<{ [key: string]: any }, 'data' | 'error' | "errorMap">>{
   private _allProperty: Set<string> = new Set();
   public data: UnwrapNestedRefs<DataModel> = reactive({} as any)
   public error: UnwrapNestedRefs<string[]> = reactive([])
@@ -187,13 +189,12 @@ export class VModel<DataModel extends Omit<{ [key: string]: any },'data'|'error'
         set: (v) => {
           for (let i of (that as any)._d.filter((item: any) => item.key === key)
           ) {
-            if (i.setRule)
-              i.setRule(that, v)
+            if (i.setRule && i.setRule(that, v)) break
           }
           that.trick()
         },
         get: () => {
-          let v: any
+          let v: any = (that as any)[`_${key}`]
           for (let i of (that as any)._d.filter((item: any) => item.key === key)
           ) {
             if (i.getRule) {
@@ -204,6 +205,11 @@ export class VModel<DataModel extends Omit<{ [key: string]: any },'data'|'error'
         }
       })
     }
+    this.setValue(data)
+
+  }
+
+  setValue(data?: Partial<DataModel>) {
     if (data) {
       for (let i in data) {
 
@@ -211,8 +217,8 @@ export class VModel<DataModel extends Omit<{ [key: string]: any },'data'|'error'
           (this as any)[i] = (data as any)[i];
         }
       }
+      this.trick()
     }
-    this.trick()
   }
   cleanProperty() {
     for (let key of [...this._allProperty]) {

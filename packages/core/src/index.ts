@@ -1,8 +1,9 @@
 import { set } from "lodash-es";
-import { reactive, computed, effectScope } from "vue";
-export function createInstance(schema: { [key in string]: any }) {
+import { reactive, computed, effectScope, isRef, Ref } from "vue";
+export function createInstance(schema: { [key in string]: any }, initData?: any) {
   let config = reactive(schema);
-  let data = reactive<any>({});
+  let data = initData || reactive<any>({});
+
   const scope = effectScope();
 
   function traverseProperty(obj: any, path: string) {
@@ -12,9 +13,9 @@ export function createInstance(schema: { [key in string]: any }) {
         let body = obj[k].match(/^{{(.*)}}$/)[1];
         let r = computed(() => {
           return new Function(
-            `{${Object.keys(data).join(",")}}`,
+            `{${Object.keys(isRef(data) ? data.value : data).join(",")}}`,
             `return ${body}`
-          )(data);
+          )(isRef(data) ? data.value : data);
         });
 
         set(config, propertyPath, r);
@@ -29,7 +30,12 @@ export function createInstance(schema: { [key in string]: any }) {
   }
   scope.run(() => {
     for (let i in schema) {
-      data[i] = schema[i]._default || null;
+      if (isRef(data)) {
+        (data as Ref<any>).value[i] = schema[i]._default
+      } else {
+        data[i] = schema[i]._default
+
+      }
       traverseProperty(schema[i], i);
     }
   });

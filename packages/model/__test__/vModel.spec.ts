@@ -11,8 +11,6 @@ describe("model", () => {
             brief: string;
         }
         let user = new User();
-
-
         user.name = "fgp";
         user.brief = "fgp";
 
@@ -38,4 +36,6 @@ describe("model", () => {
         user.age = 18
         expect(user.error.length).toBe(0)
     });
+
+  
 });
