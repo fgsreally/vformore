@@ -1,26 +1,6 @@
-import { eq, isFunction, isObject, isString } from "lodash-es"
 import { reactive, UnwrapNestedRefs } from "vue"
+import { init, validate } from "./utils";
 
-function init(obj: any, key = "_d") {
-  if (!obj[key]) obj[key] = [];
-}
-
-function validtor(p: RegExp | string | Function | Object, v: any) {
-  if (isString(p)) {
-    if (v === p) return true;
-  }
-  if (isFunction(p)) {
-    return (p as Function)(v);
-  }
-  if (p instanceof RegExp) {
-    return p.test(v);
-  }
-  if (isObject(p)) {
-    return eq(p, v)
-  }
-  return false
-
-}
 
 export function Any(obj: any, key: string) {
   init(obj)
@@ -45,12 +25,13 @@ export function Rule(p: RegExp | string | Function | Object, info: string) {
     obj._d.unshift({
       type: "rule",
       key,
+      value: arguments,
       setRule: (instance: any, v: any) => {
         instance[`_${key}`] = v;
         return true
       },
       getRule: (instance: any, v: any) => {
-        if (!validtor(p, v) && !instance.errorMap[key]) {
+        if (!validate(p, v) && !instance.errorMap[key]) {
           instance.errorMap[key] = info
           instance.error.push(info)
         }
@@ -65,7 +46,8 @@ export function Get(p: Function) {
 
     obj._d.unshift({
       type: "get",
-      key,
+      key, value: arguments,
+
       setRule: () => {
         return true
       },
@@ -82,10 +64,11 @@ export function Is(p: RegExp | string | Function | Object, defaultValue?: any) {
 
     obj._d.unshift({
       type: "is",
-      key,
+      key, value: arguments,
+
       action(instance: any) { instance[`_${key}`] = defaultValue; },
       setRule: (instance: any, v: any) => {
-        if (validtor(p, v)) {
+        if (validate(p, v)) {
           instance[`_${key}`] = v;
         }
         return true
@@ -98,15 +81,18 @@ export function Is(p: RegExp | string | Function | Object, defaultValue?: any) {
   };
 }
 
-interface decoratorInfo {
-  type: "is" | "get" | "rule";
+export interface decoratorInfo {
+  type: "is" | "get" | "rule" | 'any';
   key: string;
+  value?: any
   action?: (instance: any) => void;
   setRule?: (instance: any, v: any) => void;
   getRule?: (instance: any, v: any) => any;
 }
 
-export class Model<DataModel extends Omit<{ [key: string]: any }, 'data' | 'error' | "errorMap">> {
+
+export type ModelType = Omit<{ [key: string]: any }, 'data' | 'error' | "errorMap">
+export class Model<DataModel extends ModelType> {
   private _allProperty: Set<string> = new Set();
   errorMap: { [key: string]: string }
   data: { [key: string]: any }
@@ -170,7 +156,7 @@ function isEmpty(value: any) {
   return value === undefined || value === null;
 }
 
-export class VModel<DataModel extends Omit<{ [key: string]: any }, 'data' | 'error' | "errorMap">>{
+export class VModel<DataModel extends ModelType>{
   private _allProperty: Set<string> = new Set();
   public data: UnwrapNestedRefs<DataModel> = reactive({} as any)
   public error: UnwrapNestedRefs<string[]> = reactive([])

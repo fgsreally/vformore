@@ -1,5 +1,11 @@
 # @vformore/model
 
+## 1.0.5
+
+### Patch Changes
+
+- add element-plus resolver
+
 ## 1.0.4
 
 ### Patch Changes

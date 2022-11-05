@@ -5,7 +5,9 @@
     :is="getComponent(config[item]._component)"
     v-model="data[item]"
     v-bind="config[item]"
-  ></component>
+  >
+    <slot></slot>
+  </component>
 </template>
 
 <script setup lang="ts">
