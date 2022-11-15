@@ -1,5 +1,11 @@
 # @vformore/component
 
+## 1.1.1
+
+### Patch Changes
+
+- feature:add more component resolver
+
 ## 1.1.0
 
 ### Minor Changes

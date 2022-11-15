@@ -1,13 +1,13 @@
 <script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import Editor from './view/Editor.vue'
+import Element from "./view/ElementForm.vue";
+import Naive from "./view/NaiveForm.vue";
 </script>
 
 <template>
-<Editor></Editor>
+  <Element></Element>
+  <Naive></Naive>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -26,9 +26,26 @@ import { reactive, ref } from "vue";
 import { createInstance } from "@vformore/core";
 // import Form from "@vformore/component";
 import { createForm } from "@vformore/component";
-import { Pension } from "./Model";
-import { ElForm, ElFormItem, ElMessage, ElButton } from "element-plus";
+import { ElForm, ElFormItem, ElMessage, ElButton ,FormRules} from "element-plus";
 import * as ElPlus from "element-plus";
+
+import { Rule, ElPlusModel } from "@vformore/model";
+
+class Pension extends ElPlusModel<Pension> {
+  @Rule(
+    (num: number) => {
+      return num > 55;
+    },
+    "需要大于55",
+    { required: true }
+  )
+  age: number;
+  @Rule((num: number) => {
+    return num > 5000;
+  }, "似乎太低了")
+  money: number;
+}
+
 const CustomForm = createForm(ElPlus, ElForm, ElFormItem);
 
 let ruleFormRef = ref<any>();
@@ -53,13 +70,11 @@ let { config, data } = createInstance({
   },
 });
 
-let rules = reactive(new Pension().getRules());
+let rules = reactive(new Pension().getRules({ trigger: "blur" }));
 
 const submitForm = (formEl: any) => {
-  
   if (!formEl) return;
   formEl.$.exposed?.validate((valid: boolean) => {
-
     if (valid) {
       ElMessage.success("submit!");
     } else {

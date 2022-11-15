@@ -1,6 +1,11 @@
 import { Component, defineComponent, h, onMounted, PropType, ref } from "vue";
 
-export function createForm(compSet: any, form: Component, formItem: Component) {
+export function createForm(
+  compSet: any,
+  form: Component,
+  formItem: Component,
+  modelKey: string = "modelValue"
+) {
   function generateChildVNode(props: any) {
     return props._children?.map((item: any) =>
       h((compSet as any)[item._component], item)
@@ -39,8 +44,8 @@ export function createForm(compSet: any, form: Component, formItem: Component) {
                 {
                   ...props.config[props.property],
                   ref: formInstance,
-                  modelValue: props.data[props.property],
-                  "onUpdate:modelValue": (v: any) => {
+                  [`${modelKey}`]: props.data[props.property],
+                  [`onUpdate:${modelKey}`]: (v: any) => {
                     props.data[props.property] = v;
                   },
                 },
@@ -71,7 +76,6 @@ export function createForm(compSet: any, form: Component, formItem: Component) {
     setup(props, ctx) {
       let dom = ref();
       onMounted(() => {
-
         ctx.expose({ ...dom.value });
       });
       return () => {

@@ -1,7 +1,7 @@
 import { Model, Get, Is, Rule, isNumber } from "./../src";
 import { describe, expect, it } from "vitest";
 describe("model", () => {
-  it("basic", () => {
+  it("basic", async() => {
     class User extends Model<User> {
       @Is("fgp")
       name: string;

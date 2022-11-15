@@ -12,6 +12,6 @@ describe("resolver", () => {
       @Rule(18, "年龄应为18")
       age: string;
     }
-    expect(new User().getRules()).toHaveProperty("name[0].trigger", "blur");
+    expect(new User().getRules({trigger:"blur"})).toHaveProperty("name[0].trigger", "blur");
   });
 });
