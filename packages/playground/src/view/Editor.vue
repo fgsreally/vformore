@@ -1,12 +1,22 @@
 <template>
-  <ElPlusForm
+  <!-- <ElPlusForm
     :config="config"
     :data="data"
     ref="ruleFormRef"
     :model="data"
     label-width="120px"
     :rules="rules"
-  ></ElPlusForm>
+  ></ElPlusForm> -->
+  <CustomForm
+    :config="config"
+    :data="data"
+    ref="ruleFormRef"
+    :model="data"
+    label-width="120px"
+    :rules="rules"
+  >
+  </CustomForm>
+
   <el-button type="primary" @click="submitForm(ruleFormRef)">Submit</el-button>
   {{ data }}
 </template>
@@ -15,11 +25,13 @@
 import { reactive, ref } from "vue";
 import { createInstance } from "@vformore/core";
 // import Form from "@vformore/component";
-import { ElPlusForm } from "@vformore/component";
+import { createForm } from "@vformore/component";
 import { Pension } from "./Model";
-import { ElMessage, FormInstance, ElButton } from "element-plus";
+import { ElForm, ElFormItem, ElMessage, ElButton } from "element-plus";
+import * as ElPlus from "element-plus";
+const CustomForm = createForm(ElPlus, ElForm, ElFormItem);
 
-let ruleFormRef = ref<FormInstance>();
+let ruleFormRef = ref<any>();
 let { config, data } = createInstance({
   age: {
     _component: "ElInputNumber",
@@ -43,9 +55,11 @@ let { config, data } = createInstance({
 
 let rules = reactive(new Pension().getRules());
 
-const submitForm = (formEl: FormInstance | undefined) => {
+const submitForm = (formEl: any) => {
+  
   if (!formEl) return;
   formEl.$.exposed?.validate((valid: boolean) => {
+
     if (valid) {
       ElMessage.success("submit!");
     } else {
