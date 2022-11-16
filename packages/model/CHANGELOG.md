@@ -1,5 +1,11 @@
 # @vformore/model
 
+## 1.0.7
+
+### Patch Changes
+
+- fix naiveui resolver async logic
+
 ## 1.0.6
 
 ### Patch Changes

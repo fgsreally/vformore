@@ -14,9 +14,9 @@ export class NaiveModel<T extends Omit<ModelType, "rules">> extends Model<T> {
         ret[d.key].push({
           validator: async (_: any, value: any) => {
             if (!(await validate(d.value[0], value))) {
-              return new Error(d.value[1]);
+              return Promise.reject(d.value[1]);
             } else {
-              return true;
+              return Promise.resolve();
             }
           },
           ...(defaultOptions || {}),

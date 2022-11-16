@@ -33,7 +33,7 @@ import { Rule, ElPlusModel } from "@vformore/model";
 
 class Pension extends ElPlusModel<Pension> {
   @Rule(
-    (num: number) => {
+    async(num: number) => {
       return num > 55;
     },
     "需要大于55",
