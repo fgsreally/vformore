@@ -64,7 +64,6 @@ let { config, data } = createInstance({
 });
 
 let rules = reactive(new Pension().getRules({ trigger: "blur" }));
-console.log(rules)
 const submitForm = (formEl: any) => {
   if (!formEl) return;
   console.log(formEl.$.exposed);

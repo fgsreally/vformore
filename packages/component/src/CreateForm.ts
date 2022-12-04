@@ -1,9 +1,9 @@
-import { Component, defineComponent, h, onMounted, PropType, ref } from "vue";
+import { Component, defineComponent, h, onMounted, PropType, Ref, ref } from "vue";
 
 export function createForm(
   compSet: any,
   form: Component,
-  formItem: Component,
+  formItem: Component|false,
   modelKey: string = "modelValue"
 ) {
   function generateChildVNode(props: any) {
@@ -11,6 +11,24 @@ export function createForm(
       h((compSet as any)[item._component], item)
     );
   }
+
+function generateVNode(props:any,Instance:Ref<HTMLElement>){
+  return h(
+    compSet[props.config[props.property]._component],
+    {
+      ...props.config[props.property],
+      ref: Instance,
+      [`${modelKey}`]: props.data[props.property],
+      [`onUpdate:${modelKey}`]: (v: any) => {
+        props.data[props.property] = v;
+      },
+    },
+    {
+      default: () =>
+        generateChildVNode(props.config[props.property]),
+    }
+  );
+}
 
   const FormItem = defineComponent({
     name: "custom-form-item",
@@ -32,31 +50,17 @@ export function createForm(
     setup(props, ctx) {
       const formInstance = ref();
       return () => {
-        return h(
+        return formItem? h(
           formItem as any,
           {
             ...props.formItem,
           },
           {
             default: () => {
-              return h(
-                compSet[props.config[props.property]._component],
-                {
-                  ...props.config[props.property],
-                  ref: formInstance,
-                  [`${modelKey}`]: props.data[props.property],
-                  [`onUpdate:${modelKey}`]: (v: any) => {
-                    props.data[props.property] = v;
-                  },
-                },
-                {
-                  default: () =>
-                    generateChildVNode(props.config[props.property]),
-                }
-              );
+              return generateVNode(props,formInstance)
             },
           }
-        );
+        ):generateVNode(props,formInstance);
       };
     },
   });

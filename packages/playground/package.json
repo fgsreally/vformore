@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vformore/component": "workspace:^1.1.1",
+    "@vformore/component": "workspace:^1.2.0",
     "@vformore/core": "workspace:^1.0.3",
     "@vformore/model": "workspace:^1.0.7",
     "ant-design-vue": "^3.2.15",

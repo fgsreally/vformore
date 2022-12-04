@@ -72,9 +72,9 @@ importers:
 
   packages/playground:
     specifiers:
-      '@vformore/component': workspace:^1.1.0
+      '@vformore/component': workspace:^1.1.1
       '@vformore/core': workspace:^1.0.3
-      '@vformore/model': workspace:^1.0.5
+      '@vformore/model': workspace:^1.0.7
       '@vitejs/plugin-vue': ^3.1.0
       ant-design-vue: ^3.2.15
       element-plus: ^2.2.18
