@@ -7,7 +7,7 @@ describe("model", () => {
       name: string;
       @Is(isNumber, 18)
       age: number;
-      @Get(({ name, age }: any) => name + age)
+      @Get(({ name, age }: User) => name + age)
       brief: string;
     }
     let user = new User();

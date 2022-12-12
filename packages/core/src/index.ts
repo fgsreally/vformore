@@ -1,8 +1,8 @@
 import { set } from "lodash-es";
-import { reactive, computed, effectScope, isRef, Ref } from "vue";
-export function createInstance(schema: { [key in string]: any }, initData?: any) {
+import { reactive, computed, effectScope, isRef, Ref ,UnwrapNestedRefs,isReactive} from "vue";
+export function createInstance<Scheme extends Object,Data extends Object >(schema: Scheme, initData?: Ref<Data>|UnwrapNestedRefs<Data>) {
   let config = reactive(schema);
-  let data = initData || reactive<any>({});
+  let data = initData || reactive<Data>({} as Data);
 
   const scope = effectScope();
 
@@ -30,12 +30,19 @@ export function createInstance(schema: { [key in string]: any }, initData?: any)
   }
   scope.run(() => {
     for (let i in schema) {
-      if (isRef(data)) {
-        (data as Ref<any>).value[i] = schema[i]._default
-      } else {
-        data[i] = schema[i]._default
+      const defaultValue=(schema[i] as any)._default
+      if(defaultValue){
+        if (isRef(data)) {
+          (data as Ref<any>).value[i] = defaultValue
+          
+        } 
+        if(isReactive(data)){
+          (data as any)[i] =defaultValue
+        }
+      
 
       }
+    
       traverseProperty(schema[i], i);
     }
   });

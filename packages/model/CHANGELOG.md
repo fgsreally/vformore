@@ -1,5 +1,11 @@
 # @vformore/model
 
+## 1.0.8
+
+### Patch Changes
+
+- fix types for createInstance
+
 ## 1.0.7
 
 ### Patch Changes
